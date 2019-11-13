@@ -1,0 +1,264 @@
+---
+title: "No_data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Datos
+
+En la carpeta `data` se encuentran 10 archivos .log de los 10 cuadrantes llamados `clipped_total_<lat>W_<lon>N.log`. Los datos se encuentran en orde ascendente, comenzando con el trimestre 2 del año 1984 y finalizando con el trimestre 3 del año 2015.
+Estos archivos contienen 3 columnas con el número de pixeles de cada una de las tres clases en el cuadrante para todos los trimestres de la serie.  
+El orden de las columnas es el siguiente:  
+1a columna: no_data  
+2a columna: no agua  
+3a columna: agua  
+
+Al cargarlos se ven de la siguiente forma:  
+
+```{r, include=FALSE}
+setwd("./data")
+library(tidyverse)
+src <- read.csv("clipped_total_100W_20N.log", header=FALSE, col.names = c('c0','c1','c2'))
+```
+
+```{r, echo TRUE}
+head(src)
+```
+
+```{r, include=FALSE}
+date<-seq(as.Date("1984-04-01", format="%Y-%m-%d"), as.Date("2015-09-30", format="%Y-%m-%d"), by="quarter")
+zone<-rep("c100w20n",126)
+src <- cbind(src, date)
+src <- cbind(src, zone)
+clmax <- max(src['c1']+src['c2'])
+
+src <- src %>% 
+  mutate(pct_c0=c0*100/(c0+c1+c2)) %>%
+  mutate(pct_c0_rel_data=(1-(c1+c2)/clmax)*100) %>%
+  separate(date,c("year","month","day"),sep='-') %>%
+  select(-day)
+
+df <- src
+rm(src)
+
+src <- read.csv("clipped_total_100W_30N.log", header=FALSE, col.names = c('c0','c1','c2'))
+zone<-rep("c100w30n",126)
+src <- cbind(src, date)
+src <- cbind(src, zone)
+clmax <- max(src['c1']+src['c2'])
+src <- src %>% 
+  mutate(pct_c0=c0*100/(c0+c1+c2)) %>%
+  mutate(pct_c0_rel_data=(1-(c1+c2)/clmax)*100) %>%
+  separate(date,c("year","month","day"),sep='-') %>%
+  select(-day)
+
+df <- rbind(df,src)
+rm(src)
+
+src <- read.csv("clipped_total_110W_20N.log", header=FALSE, col.names = c('c0','c1','c2'))
+zone<-rep("c110w20n",126)
+src <- cbind(src, date)
+src <- cbind(src, zone)
+clmax <- max(src['c1']+src['c2'])
+src <- src %>% 
+  mutate(pct_c0=c0*100/(c0+c1+c2)) %>%
+  mutate(pct_c0_rel_data=(1-(c1+c2)/clmax)*100) %>%
+  separate(date,c("year","month","day"),sep='-') %>%
+  select(-day)
+
+df <- rbind(df,src)
+rm(src)
+
+src <- read.csv("clipped_total_110W_30N.log", header=FALSE, col.names = c('c0','c1','c2'))
+zone<-rep("c110w30n",126)
+src <- cbind(src, date)
+src <- cbind(src, zone)
+clmax <- max(src['c1']+src['c2'])
+src <- src %>% 
+  mutate(pct_c0=c0*100/(c0+c1+c2)) %>%
+  mutate(pct_c0_rel_data=(1-(c1+c2)/clmax)*100) %>%
+  separate(date,c("year","month","day"),sep='-') %>%
+  select(-day)
+
+df <- rbind(df,src)
+rm(src)
+
+src <- read.csv("clipped_total_110W_33N.log", header=FALSE, col.names = c('c0','c1','c2'))
+zone<-rep("c110w33n",126)
+src <- cbind(src, date)
+src <- cbind(src, zone)
+clmax <- max(src['c1']+src['c2'])
+src <- src %>% 
+  mutate(pct_c0=c0*100/(c0+c1+c2)) %>%
+  mutate(pct_c0_rel_data=(1-(c1+c2)/clmax)*100) %>%
+  separate(date,c("year","month","day"),sep='-') %>%
+  select(-day)
+
+df <- rbind(df,src)
+rm(src)
+
+src <- read.csv("clipped_total_116W_20N.log", header=FALSE, col.names = c('c0','c1','c2'))
+zone<-rep("c116w20n",126)
+src <- cbind(src, date)
+src <- cbind(src, zone)
+clmax <- max(src['c1']+src['c2'])
+src <- src %>% 
+  mutate(pct_c0=c0*100/(c0+c1+c2)) %>%
+  mutate(pct_c0_rel_data=(1-(c1+c2)/clmax)*100) %>%
+  separate(date,c("year","month","day"),sep='-') %>%
+  select(-day)
+
+df <- rbind(df,src)
+rm(src)
+
+src <- read.csv("clipped_total_120W_30N.log", header=FALSE, col.names = c('c0','c1','c2'))
+zone<-rep("c120w30n",126)
+src <- cbind(src, date)
+src <- cbind(src, zone)
+clmax <- max(src['c1']+src['c2'])
+src <- src %>% 
+  mutate(pct_c0=c0*100/(c0+c1+c2)) %>%
+  mutate(pct_c0_rel_data=(1-(c1+c2)/clmax)*100) %>%
+  separate(date,c("year","month","day"),sep='-') %>%
+  select(-day)
+
+df <- rbind(df,src)
+rm(src)
+
+src <- read.csv("clipped_total_120W_40N.log", header=FALSE, col.names = c('c0','c1','c2'))
+zone<-rep("c120w40n",126)
+src <- cbind(src, date)
+src <- cbind(src, zone)
+clmax <- max(src['c1']+src['c2'])
+src <- src %>% 
+  mutate(pct_c0=c0*100/(c0+c1+c2)) %>%
+  mutate(pct_c0_rel_data=(1-(c1+c2)/clmax)*100) %>%
+  separate(date,c("year","month","day"),sep='-') %>%
+  select(-day)
+
+df <- rbind(df,src)
+rm(src)
+
+src <- read.csv("clipped_total_90W_20N.log", header=FALSE, col.names = c('c0','c1','c2'))
+zone<-rep("c90w20n",126)
+src <- cbind(src, date)
+src <- cbind(src, zone)
+clmax <- max(src['c1']+src['c2'])
+src <- src %>% 
+  mutate(pct_c0=c0*100/(c0+c1+c2)) %>%
+  mutate(pct_c0_rel_data=(1-(c1+c2)/clmax)*100) %>%
+  separate(date,c("year","month","day"),sep='-') %>%
+  select(-day)
+
+df <- rbind(df,src)
+rm(src)
+
+src <- read.csv("clipped_total_90W_23N.log", header=FALSE, col.names = c('c0','c1','c2'))
+zone<-rep("c90w23n",126)
+src <- cbind(src, date)
+src <- cbind(src, zone)
+clmax <- max(src['c1']+src['c2'])
+src <- src %>% 
+  mutate(pct_c0=c0*100/(c0+c1+c2)) %>%
+  mutate(pct_c0_rel_data=(1-(c1+c2)/clmax)*100) %>%
+  separate(date,c("year","month","day"),sep='-') %>%
+  select(-day)
+
+df <- rbind(df,src)
+rm(src)
+```
+
+A partir de estos datos se agregaron columnas de años, mes del inicio de trimestre, cuadrante o zona, y se determinó el porcentaje de falta de datos para cada cuadrante y cada trimestre, lo cual está en la columna `pct_c0`. Sin embargo este porcentaje incluye la falta de datos de los cuadrantes en zonas donde no debería haber datos, como en el mar o fuera de México, por lo que también se calcularon porcentajes de falta de datos tomando como 100% de datos, el número de pixeles máximo para cada cuadrante de agua y no agua. Este porcentaje es el de la columna `pct_c0_rel_data` y es el que se tomó para explorar los datos.
+
+A continuación se muestran los primeros renglones de la tabla de datos con estos porcentajes:
+
+```{r}
+head(df)
+```
+
+
+```{r, echo=FALSE}
+california <- 'c120w40n'
+baja <- 'c120w30n'
+islas <- 'c116w20n'
+chih <- 'c110w33n'
+durango <- 'c110w30n'
+mich <- 'c110w20n'
+golfo <- 'c100w30n'
+istmo <- 'c100w20n'
+yucatan <- 'c90w23n'
+qroo <- 'c90w20n'
+todos <- c(california,baja,islas,chih,durango,mich,golfo,istmo,yucatan,qroo)
+```
+
+A continuación se muestran gráficas de los 10 cuadrantes, las cuales muestran cuatro subgráficas, una para cada trimestre, donde se muestra el porcentaje relativo de falta de datos a lo largo del tiempo:
+```{r, echo=FALSE}
+#mensual
+monthly_plot <- function(cuadr){
+#  filename <- sprintf("%s_plot.png", cuadr)
+#  png(filename = filename, width = 1024, height = 768)
+#  my_plot <- ggplot(df %>% filter(zone==cuadr), aes(x=date, y=pct_c0_rel_data)) + 
+  ggplot(df %>% filter(zone==cuadr), aes(x=date, y=pct_c0_rel_data)) + 
+      geom_line() +
+    geom_point() +
+    facet_wrap(~ reorder(month,pct_c0_rel_data), scales = "free_y") +
+    scale_x_date(name = "Año",
+                     breaks=seq(as.Date("1984-01-01", format="%Y-%m-%d"), as.Date("2016-01-01", format="%Y-%m-%d"), by="year")[c(2,7,12,17,22,27,32)],
+                     labels=c("1985","1990","1995","2000","2005","2010","2015")) +
+    ggtitle(cuadr) 
+#  print(my_plot)
+#  dev.off()
+  }
+
+for (i in todos) { 
+  p<- monthly_plot(i)
+  print(p)
+}
+
+#write.csv(df %>% select(-pct_c0), 'porcentaje_no-data.csv')
+
+```
+
+En la siguiente gráfica se muestran las mismas gráficas, pero todos los cuadrantes juntos:
+```{r, echo=FALSE}
+# mensual todas
+ggplot(df %>% group_by(zone), aes(x=rep(date,10), y=pct_c0_rel_data, color=zone)) + 
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ reorder(month,pct_c0_rel_data))
+```
+
+A continuación se muestra un boxplot para cada cuadrante ordenado de acuerdo al porcentaje relativo:
+```{r, echo=FALSE}
+# boxplot
+ggplot(df, aes(reorder(zone, pct_c0_rel_data),pct_c0_rel_data)) +
+  geom_boxplot()
+```
+
+A continuación se muestran 10 gráficas, una por cuadrante, con subgráficas de cada año, donde se muestra el porcentaje relativo de no data para cada trimestre:
+```{r, echo=FALSE}
+# anuales (intraanual)
+yearly_plot <- function(cuadr){
+  ggplot(df %>% filter(zone==cuadr), aes(x=month, y=pct_c0_rel_data)) + 
+    geom_point() +
+    facet_wrap(~ year) +
+    ggtitle(cuadr)
+  }
+
+for (i in todos) { 
+  p<- yearly_plot(i)
+  print(p)
+}
+```
+
+A continuación se muestran las mismas gráficas anteriores, pero todos los cuadrantes en una misma gráfica:
+```{r, echo=FALSE}
+# anuales todas (intraanual)
+ggplot(df %>% group_by(zone), aes(x=month, y=pct_c0_rel_data, color=zone)) + 
+  geom_point() +
+  facet_wrap(~ year)
+```
+
